@@ -1,5 +1,5 @@
+import { getName } from './db.js';
 import express, { json } from 'express';
-
 
 const app = express();
 const PORT = 3000;
@@ -12,5 +12,6 @@ app.listen(PORT, () => {
 
 app.post('/hello', (req, res) => {
     const name = req.body.name;
+    const user = getName(1);
     res.json({ message: `Hello, ${name}!` });
 });
