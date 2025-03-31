@@ -1,3 +1,6 @@
 # unity_nodejs
 
-node.js 공부 !!
+# How to Start
+``` bash
+npx ts-node src/index.ts
+```

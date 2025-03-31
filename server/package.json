@@ -13,6 +13,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "apollo-server": "^3.13.0",
+    "graphql": "^16.10.0",
+    "mariadb": "^3.4.0",
     "typescript": "^5.8.2"
   },
   "devDependencies": {
@@ -24,11 +27,11 @@
   },
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs", 
-    "outDir": "./dist", 
+    "module": "commonjs",
+    "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true, 
-    "moduleResolution": "node", 
+    "strict": true,
+    "moduleResolution": "node",
     "esModuleInterop": true
   }
 }
