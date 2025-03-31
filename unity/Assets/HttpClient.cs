@@ -4,33 +4,25 @@ using UnityEngine.Networking;
 
 public class HttpClient : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SendPostRequest("http://localhost:3000/hello", "ChatGPT"));
+        // 로컬호스트는 Unity Editor에서만 작동, 실제 기기에서는 서버 주소 필요
+        StartCoroutine(GetHelloMessage("http://localhost:3000/"));
     }
 
-    IEnumerator SendPostRequest(string url, string name)
+    IEnumerator GetHelloMessage(string url)
     {
-        var json = "{\"name\":\"" + name + "\"}";
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-
-        UnityWebRequest request = new(url, "POST")
-        {
-            uploadHandler = new UploadHandlerRaw(bodyRaw),
-            downloadHandler = new DownloadHandlerBuffer()
-        };
-        request.SetRequestHeader("Content-Type", "application/json");
-
+        using UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Response: " + request.downloadHandler.text);
+            Debug.LogError($"Request Error: {request.error}");
         }
         else
         {
-            Debug.Log("Error: " + request.error);
+            Debug.Log($"Server says: {request.downloadHandler.text}");
         }
     }
 }
