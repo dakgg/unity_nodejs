@@ -1,0 +1,15 @@
+{
+  "name": "my-game-server",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "api",
+  "overrideCommand": true,  
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+
+      ]
+    }
+  },
+  "postCreateCommand": "npm ci || npm install"
+}

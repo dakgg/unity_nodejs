@@ -5,52 +5,27 @@ using UnityEngine.Networking;
 
 public class HttpClient : MonoBehaviour
 {
-    private const string GRAPHQL_URL = "http://localhost:4000/graphql";
-
-    void Start()
+   private void Start()
     {
-        StartCoroutine(CreatePlayer("Alice", 100));
-        StartCoroutine(GetPlayer("1"));
+        StartCoroutine(SendRequest());
     }
 
-    IEnumerator CreatePlayer(string name, int score)
+    IEnumerator SendRequest()
     {
-        string mutation = $@"
-        {{
-            ""query"": ""mutation {{ createPlayer(name: \""{name}\"", score: {score}) {{ id name score }} }}""
-        }}";
-
-        yield return SendGraphQLRequest(mutation, "CreatePlayer");
-    }
-
-    IEnumerator GetPlayer(string id)
-    {
-        string query = $@"
-        {{
-            ""query"": ""query {{ player(id: \""{id}\"") {{ name score }} }}""
-        }}";
-
-        yield return SendGraphQLRequest(query, "GetPlayer");
-    }
-
-    IEnumerator SendGraphQLRequest(string bodyJson, string label)
-    {
-        var request = new UnityWebRequest(GRAPHQL_URL, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(bodyJson);
-
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
+        string url = "http://localhost:3000/"; 
+        using UnityWebRequest request = UnityWebRequest.Get(url);
+        // 요청 전송
         yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
+        // 응답 처리
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log($"[{label}] Response: " + request.downloadHandler.text);
+            Debug.LogError($"서버 요청 실패: {request.error}");
         }
         else
         {
-            Debug.LogError($"[{label}] Error: " + request.error);
+            Debug.Log($"서버 응답: {request.downloadHandler.text}");
         }
     }
 }

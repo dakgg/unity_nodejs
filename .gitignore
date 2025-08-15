@@ -1,3 +1,4 @@
+server/api/node_modules/
 server/node_modules/
 server/.vscode
 
@@ -7,3 +8,4 @@ unity/Temp/*
 unity/UserSettings/Layouts
 unity/unity.sln
 unity/.vscode
+unity/*.csproj

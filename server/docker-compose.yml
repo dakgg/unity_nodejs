@@ -1,0 +1,14 @@
+services:
+  api:
+    build:
+      context: ./api
+    container_name: mygs-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/workspace
+    working_dir: /workspace
+    command: >
+      sh -lc "[ -d node_modules ] || (npm ci || npm install);
+      node src/app.js"
