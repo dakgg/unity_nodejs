@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",        // 최신 JS 문법 지원
+    "module": "nodenext",      // Node.js ESM 해석 방식
+    "checkJs": true,           // JS 파일도 타입 체크 & 인텔리센스 강화
+    "moduleResolution": "nodenext",
+  },
+  "exclude": ["node_modules"]
+}
