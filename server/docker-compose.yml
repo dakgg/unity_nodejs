@@ -2,7 +2,7 @@ services:
   api:
     build:
       context: ./api
-    container_name: mygs-api
+    container_name: dev-gs
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -12,3 +12,24 @@ services:
     command: >
       sh -lc "[ -d node_modules ] || (npm ci || npm install);
       node src/app.js"
+
+  redis:
+    image: redis:7-alpine
+    container_name: dev-redis
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --appendonly yes            
+      --appendfsync everysec
+      --save 900 1 --save 300 10 --save 60 10000  
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru           
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data                    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 20

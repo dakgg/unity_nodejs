@@ -1,6 +1,7 @@
 server/api/node_modules/
 server/node_modules/
 server/.vscode
+server/data/redis
 
 unity/Library/*
 unity/Logs/*
